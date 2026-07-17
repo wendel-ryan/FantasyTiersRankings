@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 
 from .database import engine, Base, get_db
 # registers tables with Base.metaData
-from .models import user, ranking, player
+from .models import user, ranking, player, tier
+from app.routes import users, players, rankings, tiers, scrape
 
 @asynccontextmanager
 # Run on application startup
@@ -22,6 +23,12 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+app.include_router(users.router)
+app.include_router(players.router)
+app.include_router(rankings.router)
+app.include_router(tiers.router)
+app.include_router(scrape.router)
 
 @app.get("/")
 def root():

@@ -1,0 +1,21 @@
+* {
+  color: white;
+}
+
+#root {
+  width: 100vw; /* Fills the entire viewport width */
+  max-width: 1200px; /* Optional: limits growth on large screens */
+  height: fit-content;
+  margin: 0 auto; /* Centers the root if max-width is applied */
+}
+
+body {
+  width: 100vw; /* Fills the entire viewport width */
+  max-width: 100vw; /* Optional: limits growth on large screens */
+  margin: 0 auto;
+  background-color: rgb(10, 26, 47);
+}
+
+.container {
+  background-image: url("./src/assets/border-background.png");
+}

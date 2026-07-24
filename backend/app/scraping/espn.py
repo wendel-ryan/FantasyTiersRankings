@@ -1,9 +1,6 @@
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
+from playwright.sync_api import sync_playwright
 import time
-import undetected_chromedriver as uc
 
 team_abbreviations = {
     "Cardinals": ["ARI", "Arizona"],
@@ -41,21 +38,7 @@ team_abbreviations = {
 }
 
 def scrape_espn_rankings():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")  # Use the new headless mode
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1920,1080")
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                        "AppleWebKit/537.36 (KHTML, like Gecko) "
-                        "Chrome/114.0.5735.90 Safari/537.36")
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
-    
-    driver = driver = uc.Chrome(headless=True)
-    time.sleep(2)
+
     
     URLbody = 'https://fantasy.espn.com/football/players/projections?leagueFormatId='
 
@@ -63,23 +46,32 @@ def scrape_espn_rankings():
     formats = {'1':'Standard','3':'PPR'}
 
     for key in formats:
-
+        pages = []
         URL = URLbody+key
-        driver.get(URL)
 
-        page = 0
+        pageNumber = 0
         rank = 1
 
-        while page<6:
-            time.sleep(5)
-            html_content = driver.page_source
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(URL)
+            while pageNumber<6:
+                time.sleep(5)
+                html_content = page.content()
+                pages.append(html_content)
+                page.wait_for_selector(".Pagination__Button--next:not([aria-disabled='true'])", state="visible")
+                page.locator(".Pagination__Button--next").click(force=True)
+                pageNumber+=1
+            browser.close()
 
-            soup = BeautifulSoup(html_content, "html.parser")
+        for page in pages:
+            soup = BeautifulSoup(page, "html.parser")
             rows = soup.select(".player-info-section")
-            
+                
             for row in rows:
                 player = {}
-                
+                    
                 player['image'] = row.select_one("img")["src"]
                 player['name'] = row.select_one(".player-name").text
 
@@ -88,7 +80,7 @@ def scrape_espn_rankings():
                     player['position'] = 'DST'
                     player['team'] = team_abbreviations[player['name']][0]
                     player['name'] = team_abbreviations[player['name']][1] + ' ' + player['name']
-                    
+                        
                 else:
                     player['position'] = row.select_one(".position-eligibility").text
                     player['team'] = row.select_one('.player-teamname').text
@@ -103,8 +95,4 @@ def scrape_espn_rankings():
 
                 allPlayers.append(player)
 
-            driver.find_element(By.CLASS_NAME,"Pagination__Button--next").click()
-            page+=1
-
-    driver.quit()
     return allPlayers

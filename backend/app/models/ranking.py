@@ -11,3 +11,6 @@ class Ranking(Base):
     player_id = Column(Integer, ForeignKey("players.id"))
     rank = Column(Integer)
     format = Column(String)
+
+    player = relationship("Player", back_populates="rankings")
+

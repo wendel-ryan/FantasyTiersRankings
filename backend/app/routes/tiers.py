@@ -3,11 +3,13 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.player import Player
 from app.models.tier import Tier
+from app.auth.deps import get_current_user
+
 
 router = APIRouter(prefix="/tiers", tags=["Tiers"])
 
 @router.get("/")
-def get_tiers(position: str | None = None, scoring_format: str = "PPR", db: Session = Depends(get_db)):
+def get_tiers(position: str | None = None, scoring_format: str = "PPR", db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     query = db.query(Tier).join(Player)
     query = query.filter(Tier.scoring_format == scoring_format)
 
@@ -18,7 +20,7 @@ def get_tiers(position: str | None = None, scoring_format: str = "PPR", db: Sess
 
 
 @router.post("/override")
-def override_tier(player_id: int, tier: int, scoring_format: str = "PPR", db: Session = Depends(get_db)):
+def override_tier(player_id: int, tier: int, scoring_format: str = "PPR", db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     player = db.query(Player).filter(Player.id == player_id).first()
     if not player:
         raise HTTPException(status_code=404, detail="Player not found")

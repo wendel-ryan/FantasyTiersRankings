@@ -5,8 +5,12 @@ from app.models.ranking import Ranking
 from app.scraping.fantasypros import scrape_fantasypros_rankings
 from app.scraping.espn import scrape_espn_rankings
 import re
+from sqlalchemy import text
 
 def run_all_scrapers(db: Session):
+    db.execute(text("TRUNCATE TABLE rankings RESTART IDENTITY CASCADE;"))
+    db.commit()
+    print("Scraping")
     data = scrape_fantasypros_rankings()
 
     for item in data:
@@ -116,6 +120,7 @@ def run_all_scrapers(db: Session):
         db.add(ranking)
     db.commit()
 
+    genrateAVGranks(db)
     return
 
 def genrateAVGranks(db: Session):
@@ -174,7 +179,20 @@ def genrateAVGranks(db: Session):
         #add each player with one associated rank to the sorted list of players with two ranks, adjusting for the absence of a ranking
         extraRank = 301
         for extra in extras:
-            print(players[extra])
+            players[extra].append(extraRank)
+            index = len(dbEntries)
+            dbEntries.append(extra)
+            avg = (players[extra][0]+players[extra][1])/2
+            avgComp = (players[dbEntries[index-1]][0]+players[dbEntries[index-1]][1])/2
+
+            while avgComp>avg and index-1>0:
+
+                dbEntries[index] = dbEntries[index-1]
+                index-=1
+                avgComp = (players[dbEntries[index-1]][0]+players[dbEntries[index-1]][1])/2
+        
+            dbEntries[index] = extra
+            extraRank+=1
 
         #add sorted avg ranks to the database
         for i in range(0,len(dbEntries)):

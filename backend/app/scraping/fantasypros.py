@@ -1,33 +1,25 @@
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-import undetected_chromedriver as uc
-import time
+from playwright.sync_api import sync_playwright
 
 def scrape_fantasypros_rankings():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")  # Use the new headless mode
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--window-size=1920,1080")
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                        "AppleWebKit/537.36 (KHTML, like Gecko) "
-                        "Chrome/114.0.5735.90 Safari/537.36")
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
-    
-    driver = driver = uc.Chrome(headless=True)
     
     formats = {'PPR':'ppr','Half-PPR':'half-point-ppr','Standard':'consensus'}
     allPlayers = []
     for key in formats:
         URL = 'https://www.fantasypros.com/nfl/rankings/'+formats[key]+'-cheatsheets.php'
-        driver.get(URL)
-        time.sleep(10)
-
-        html_content = driver.page_source
+        
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.goto(URL)
+            selector = "table#ranking-table tbody tr"
+            page.wait_for_function(
+                f"selector => document.querySelectorAll(selector).length > {400}",
+                arg=selector,
+                timeout=10000
+            )
+            html_content = page.content()
+            browser.close()
 
         soup = BeautifulSoup(html_content, "html.parser")
         rows = soup.select("table#ranking-table tbody tr")
@@ -62,7 +54,5 @@ def scrape_fantasypros_rankings():
             })
 
         allPlayers = allPlayers+players
-
-    driver.quit()
 
     return allPlayers

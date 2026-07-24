@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime, func
 from app.database import Base
+from sqlalchemy.orm import relationship
+
 
 class Tier(Base):
     __tablename__ = "tiers"

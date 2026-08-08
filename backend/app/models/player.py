@@ -13,3 +13,4 @@ class Player(Base):
     image = Column(String)
 
     rankings = relationship("Ranking", back_populates="player")
+    tiers = relationship('Tier', back_populates="player")

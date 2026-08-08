@@ -4,26 +4,38 @@ from app.database import get_db
 from app.models.ranking import Ranking
 from app.models.player import Player
 from app.auth.deps import get_current_user
-
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/rankings", tags=["Rankings"])
 
-@router.get("/")
-def get_rankings(source: str | None = None, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
-    query = db.query(Ranking)
-    if source:
-        query = query.filter(Ranking.source == source)
-    return query.order_by(Ranking.rank).all()
+class RankingsRequest(BaseModel):
+    format: str
+    source: str
 
 @router.post("/")
-def add_ranking(player_id: int, source: str, rank: int, format: str, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
-    # ensure player exists
-    player = db.query(Player).filter(Player.id == player_id).first()
-    if not player:
-        raise HTTPException(status_code=404, detail="Player not found")
+def get_rankings(req: RankingsRequest, db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
+    if req.source != "AVG":
+        raise HTTPException(status_code=400, detail="Only AVG source supported")
 
-    ranking = Ranking(player_id=player_id, source=source, rank=rank)
-    db.add(ranking)
-    db.commit()
-    db.refresh(ranking)
-    return ranking
+    rankings = (
+        db.query(Ranking)
+        .join(Player)
+        .filter(Ranking.format == req.format)
+        .filter(Ranking.source == req.source)
+        .order_by(Ranking.rank.asc())
+        .all()
+    )
+
+    results = [
+        {   
+            "id": r.player.id,
+            "name": r.player.name,
+            "team": r.player.team,
+            "position": r.player.position,
+            "rank": r.rank,
+            "image": r.player.image
+        }
+        for r in rankings
+    ]
+
+    return {"rankings": results}

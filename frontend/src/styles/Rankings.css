@@ -1,0 +1,94 @@
+.rankings-page {
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: space-around;
+  background-color: rgb(10, 26, 47);
+}
+
+.rankings-selector-div {
+  height: fit-content;
+  width: 85%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 40px auto;
+}
+
+.rankings-selector-div div {
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.rankings-selector-div button {
+  width: fit-content;
+  height: 40px;
+  background-color: rgb(168, 255, 0);
+  border: none;
+  border-radius: 10px;
+  color: black;
+  margin: auto 0;
+}
+
+.rankings-selector-div select,
+.rankings-selector-div option {
+  width: 200px;
+  color: black;
+}
+
+.rankings-table-container {
+  width: 85%;
+  margin: 0 auto;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.rankings-table {
+  width: calc(100% - 10px);
+  height: fit-content;
+  margin: 5px 0;
+  border-radius: 10px;
+  background-color: rgb(10, 26, 47);
+  border-spacing: 10px 10px;
+  border-collapse: separate;
+}
+
+.rankings-table tr {
+  width: 100%;
+}
+
+.rankings-table tr td img {
+  height: 60px;
+  width: auto;
+}
+
+.rankings-table tr td {
+  text-align: center;
+}
+
+.rankings-disclaimer {
+  width: 85%;
+  margin: 100px auto 0 auto;
+  color: white;
+}
+
+.rankings-disclaimer p {
+  margin: 0;
+}
+
+.rankings-disclaimer h5 {
+  margin: 15px 0;
+}
+
+.load-rankings {
+  width: 85%;
+  margin: auto auto;
+}

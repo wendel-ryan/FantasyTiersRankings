@@ -18,7 +18,7 @@ export default function Login() {
       const response = await login(email, password);
 
       localStorage.setItem("access_token", response.access_token);
-      navigate("/home");
+      navigate("/");
       setMessage("Successful login");
     } catch (err) {
       console.log(err);

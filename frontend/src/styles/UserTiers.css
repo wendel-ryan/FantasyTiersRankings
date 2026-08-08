@@ -1,0 +1,132 @@
+.user-tiers-page {
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: space-around;
+  background-color: rgb(10, 26, 47);
+}
+
+.create-new-container {
+  margin-top: 100px;
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.create-new-container button {
+  width: fit-content;
+  height: 40px;
+  background-color: rgb(168, 255, 0);
+  border: none;
+  border-radius: 10px;
+  color: black;
+}
+
+.user-tiers-container {
+  height: fit-content;
+  width: 100%;
+  margin: 30px 0;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-tiers {
+  width: calc(100% - 10px);
+  height: fit-content;
+  margin: 5px 0;
+  background-color: rgb(10, 26, 47);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  border-radius: 10px;
+}
+
+.user-tiers-info {
+  width: 80%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.user-tiers-info h3 {
+  width: fit-content;
+  height: fit-content;
+  margin: 30px 0;
+}
+
+.user-tiers-info p {
+  height: fit-content;
+  width: fit-content;
+  margin: auto 0;
+}
+
+.user-tiers button {
+  width: fit-content;
+  height: 40px;
+  background-color: rgb(168, 255, 0);
+  border: none;
+  border-radius: 10px;
+  color: black;
+  margin: auto 0;
+}
+
+.create-tiers-form-container {
+  width: 30%;
+  height: fit-content;
+  position: fixed;
+  left: 35%;
+  top: 30%;
+  border-radius: 10px;
+}
+
+.create-tiers-form {
+  width: calc(100% - 10px);
+  height: 350px;
+  border-radius: 10px;
+  margin: 5px 5px;
+  background-color: rgb(10, 26, 47);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.create-tiers-form p {
+  margin: 0 5%;
+  text-align: center;
+}
+
+.create-tiers-form h2 {
+  margin: 0;
+}
+
+.create-tiers-form select,
+.create-tiers-form select option {
+  color: black;
+}
+
+.create-tiers-form-buttons {
+  width: 80%;
+  height: fit-content;
+  margin: 0 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.create-tiers-form-buttons button {
+  width: fit-content;
+  height: 40px;
+  background-color: rgb(168, 255, 0);
+  border: none;
+  border-radius: 10px;
+  color: black;
+  margin: auto 0;
+}

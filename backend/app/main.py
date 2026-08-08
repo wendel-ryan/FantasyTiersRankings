@@ -2,7 +2,6 @@ from fastapi import FastAPI, Depends
 from contextlib import asynccontextmanager
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 from .database import engine, Base, get_db

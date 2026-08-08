@@ -7,8 +7,10 @@ class Tier(Base):
     __tablename__ = "tiers"
 
     id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     player_id = Column(Integer, ForeignKey("players.id"), nullable=False)
-    scoring_format = Column(String, nullable=False)
+    position = Column(String, nullable=False)
+    format = Column(String, nullable=False)
     tier = Column(Integer, nullable=False)
-    is_manual = Column(Boolean, default=False)
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    player = relationship("Player", back_populates="tiers")

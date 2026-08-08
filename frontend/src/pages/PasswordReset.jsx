@@ -30,10 +30,10 @@ export default function PasswordReset() {
 
     try {
       await emailjs.send(
-        "service_qosiy1j",
-        "template_7b8nbxo",
+        "service_c39t6it",
+        "template_944u80f",
         params,
-        "lLCUJslWCVvn-dxCY",
+        "_gRFHqHLO77_tO_uO",
       );
 
       setMessage("Reset code sent! Check your email.");

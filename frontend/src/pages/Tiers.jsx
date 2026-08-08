@@ -1,9 +1,9 @@
-import "../styles/Home.css";
 import Navbar from "../components/Navbar";
+import "../styles/Tiers.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-export default function Home() {
+export default function Tiers() {
   const navigate = useNavigate();
 
   const tierImportance = `Tier creation matters because it turns a messy draft board into a clear, strategic 
@@ -64,7 +64,9 @@ export default function Home() {
   );
 
   const showTiers = () => {
-    navigate("/user-tiers");
+    navigate("/create-tiers", {
+      state: { format: "PPR" },
+    });
   };
 
   return (

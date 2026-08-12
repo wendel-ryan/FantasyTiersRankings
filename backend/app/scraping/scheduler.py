@@ -1,6 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from app.database import SessionLocal
 from app.scraping.scrape_service import run_all_scrapers
+from datetime import date
 
 def run_scraper():
     db = SessionLocal()
@@ -9,6 +10,8 @@ def run_scraper():
     print("Fantasy rankings updated.")
 
 def start_scheduler():
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(run_scraper, "interval", days=3) 
-    scheduler.start()
+    today = date.today()
+    if today.month < 9 and today.month > 5:
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(run_scraper, "interval", days=3) 
+        scheduler.start()

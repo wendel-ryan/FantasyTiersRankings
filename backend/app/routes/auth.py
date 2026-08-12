@@ -20,12 +20,12 @@ class UserCreate(BaseModel):
 def register(user: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(User.email ==user.email).one_or_none()
     if existing_user:
-        return {"msg": "Email already registered"}
+        return {"success":0,"msg": "Email already registered"}
     
     user = User(email=user.email, hashed_password=hash_password(user.password))
     db.add(user)
     db.commit()
-    return {"msg": "User created"}
+    return {"success":1,"msg": "User created"}
 
 @router.post("/login")
 def login(userData: UserCreate, db: Session = Depends(get_db)):

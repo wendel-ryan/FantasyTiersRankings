@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from concurrent.futures import ThreadPoolExecutor
+import asyncio
 
 from .database import engine, Base, get_db
 # registers tables with Base.metaData
@@ -17,9 +18,9 @@ async def lifespan(app: FastAPI):
     try:
         Base.metadata.create_all(bind=engine)
         print("Database Tables Created Successfully")
-        #loop = asyncio.get_event_loop()
-        #executor = ThreadPoolExecutor()
-        #loop.run_in_executor(executor, start_scheduler)
+        loop = asyncio.get_event_loop()
+        executor = ThreadPoolExecutor()
+        loop.run_in_executor(executor, start_scheduler)
     except Exception as e:
         print(f"Error creating database tables: {e}")
     yield

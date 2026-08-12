@@ -61,7 +61,7 @@ export default function Login() {
           </p>
           <p style={{ textAlign: "center", marginTop: "1rem" }}>
             Forgot your password?{" "}
-            <Link to="/password-reset">Reset Password</Link>
+            <Link to="/email-confirm">Reset Password</Link>
           </p>
         </form>
       </div>

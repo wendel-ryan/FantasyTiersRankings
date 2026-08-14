@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getRanks, saveTiers } from "../services/api";
+import { checkAndRefreshToken } from "../services/api";
 
 export default function CreateTiers() {
   const location = useLocation();
@@ -39,8 +40,9 @@ export default function CreateTiers() {
     setTiers([...tiers, newTier]);
   }
 
-  const saveTiers = async (unsavedTiers, token, format, setIsSaved) => {
+  const saveUserTiers = async (unsavedTiers, token, format, setIsSaved) => {
     let tiersToSave = [];
+    const ok = await checkAndRefreshToken();
     for (let i = 0; i < unsavedTiers.length; i++) {
       for (let j = 0; j < unsavedTiers[i].players.length; j++) {
         tiersToSave.push({
@@ -75,8 +77,13 @@ export default function CreateTiers() {
   };
 
   const handleDragStart = (e, id, source) => {
-    e.dataTransfer.setData("id", id);
-    e.dataTransfer.setData("source", source);
+    console.log(id, source);
+    try {
+      e.dataTransfer.setData("id", id);
+      e.dataTransfer.setData("source", source);
+    } catch (err) {
+      console.error("DragStart error:", err);
+    }
   };
 
   const handleDragOver = (e) => {
@@ -88,6 +95,7 @@ export default function CreateTiers() {
 
     const playerId = Number(e.dataTransfer.getData("id"));
     const source = Number(e.dataTransfer.getData("source"));
+    console.log(playerId, source);
 
     e.dataTransfer.clearData();
 
@@ -139,6 +147,19 @@ export default function CreateTiers() {
     setPosition(selectedPosition);
   };
 
+  const DraggablePlayer = ({ player, tier }) => (
+    <div
+      className="tiers-player"
+      key={player.id}
+      draggable={true}
+      onDragStart={(e) => handleDragStart(e, player.id, tier.id)}
+    >
+      <p>
+        {["Rank: " + String(player.rank), player.name, player.team].join(" ")}
+      </p>
+    </div>
+  );
+
   useEffect(() => {
     if (!initializedRef.current) {
       initializeData();
@@ -172,7 +193,7 @@ export default function CreateTiers() {
         </div>
         <button
           className="save-tiers"
-          onClick={() => saveTiers(tiers, token, format, setIsSaved)}
+          onClick={() => saveUserTiers(tiers, token, format, setIsSaved)}
         >
           Save Tiers
         </button>
@@ -190,7 +211,7 @@ export default function CreateTiers() {
                   tiers.map(
                     (tier) =>
                       tier.position == position && (
-                        <div className="tier">
+                        <div className="tier" key={tier["title"]}>
                           <h5>{tier["title"]}</h5>
                           <div
                             className="tier-players-container"
@@ -198,22 +219,7 @@ export default function CreateTiers() {
                             onDrop={(e) => dropToLocation(e, tier.id)}
                           >
                             {tier.players.map((player) => (
-                              <div
-                                className="tiers-player"
-                                key={player.id}
-                                draggable
-                                onDragStart={(e) =>
-                                  handleDragStart(e, player.id, tier.id)
-                                }
-                              >
-                                <p>
-                                  {[
-                                    "Rank: " + String(player.rank),
-                                    player.name,
-                                    player.team,
-                                  ].join(" ")}
-                                </p>
-                              </div>
+                              <DraggablePlayer player={player} tier={tier} />
                             ))}
                           </div>
                         </div>
@@ -238,7 +244,7 @@ export default function CreateTiers() {
                       <div
                         className="tiers-player"
                         key={player.id}
-                        draggable
+                        draggable={true}
                         onDragStart={(e) => handleDragStart(e, player.id, 0)}
                       >
                         <p>

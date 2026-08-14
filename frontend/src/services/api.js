@@ -2,7 +2,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "http://104.207.141.124",
   withCredentials: true,
 });
 
@@ -17,10 +17,11 @@ api.interceptors.request.use(async (config) => {
     if (decoded.exp - now < 120) {
       try {
         const res = await axios.post(
-          "http://localhost:8000/refresh",
+          "http://104.207.141.124/refresh",
           {},
           { withCredentials: true },
         );
+        console.log(res);
         token = res.data.access_token;
         localStorage.setItem("access_token", token);
       } catch (err) {
@@ -45,7 +46,7 @@ export const checkAndRefreshToken = async () => {
   if (decoded.exp < now) {
     try {
       const res = await axios.post(
-        "http://localhost:8000/refresh",
+        "https://104.207.141.124/refresh",
         {},
         { withCredentials: true },
       );

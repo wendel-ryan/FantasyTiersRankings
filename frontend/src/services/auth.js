@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:8000";
+const API = "http://104.207.141.124";
 
 export const login = async (email, password) => {
   const res = await axios.post(

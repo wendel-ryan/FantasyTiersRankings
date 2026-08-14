@@ -53,9 +53,13 @@ def scrape_espn_rankings():
         rank = 1
 
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            browser = p.chromium.launch(headless=True,args=["--no-sandbox"])
             page = browser.new_page()
-            page.goto(URL)
+            page.goto(
+                URL,
+                wait_until="domcontentloaded",
+                timeout=60000
+            )
             while pageNumber<6:
                 time.sleep(5)
                 html_content = page.content()

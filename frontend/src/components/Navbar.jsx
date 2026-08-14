@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Logo from "../assets/Logo.png";
 import "../styles/Navbar.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { saveTiers } from "../services/api";
 
 export default function Navbar({
   isSaved = null,
@@ -23,13 +23,13 @@ export default function Navbar({
   const handleClick = async (e, destination) => {
     e.preventDefault();
     if (isSaved != null && !isSaved) {
-      await saveTiers(tiers);
+      await saveUserTiers(tiers);
       navigate(destination);
     }
     navigate(destination);
   };
 
-  const saveTiers = async (unsavedTiers) => {
+  const saveUserTiers = async (unsavedTiers) => {
     let tiersToSave = [];
     for (let i = 0; i < unsavedTiers.length; i++) {
       for (let j = 0; j < unsavedTiers[i].players.length; j++) {
@@ -43,16 +43,7 @@ export default function Navbar({
     }
 
     try {
-      const res = await axios.post(
-        "http://localhost:8000/tiers/load-tiers",
-        { tiers: tiersToSave },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const res = await saveTiers(tiersToSave);
     } catch (err) {
       console.error(err);
     }

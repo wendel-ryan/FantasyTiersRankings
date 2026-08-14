@@ -9,9 +9,13 @@ def scrape_fantasypros_rankings():
         URL = 'https://www.fantasypros.com/nfl/rankings/'+formats[key]+'-cheatsheets.php'
         
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            browser = p.chromium.launch(headless=True,args=["--no-sandbox"])
             page = browser.new_page()
-            page.goto(URL)
+            page.goto(
+                URL,
+                wait_until="domcontentloaded",
+                timeout=60000
+            )
             selector = "table#ranking-table tbody tr"
             page.wait_for_function(
                 f"selector => document.querySelectorAll(selector).length > {400}",

@@ -30,7 +30,7 @@
 }
 
 .register-form input {
-  width: 50%;
+  width: 60%;
   text-align: center;
   color: black;
 }
@@ -103,4 +103,15 @@
   border-radius: 5px;
   color: black;
   margin-top: 10px;
+}
+
+@media (max-width: 1000px) {
+  .register-container {
+    width: 80%;
+  }
+
+  .email-confirm-container {
+    width: 80%;
+    right: 10%;
+  }
 }

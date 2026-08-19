@@ -271,18 +271,30 @@ export default function Rankings() {
           <table className="rankings-table">
             <thead>
               <tr>
-                <th>Rank</th>
+                <th>
+                  <p>Rank</p>
+                </th>
                 <th></th>
-                <th>Player</th>
-                <th>Team</th>
-                <th>Position</th>
-                <th>Positional Rank</th>
+                <th>
+                  <p>Player</p>
+                </th>
+                <th>
+                  <p>Team</p>
+                </th>
+                <th>
+                  <p>Position</p>
+                </th>
+                <th>
+                  <p>Positional Rank</p>
+                </th>
               </tr>
             </thead>
             <tbody>
               {rankings.map((r) => (
                 <tr key={r.player_id}>
-                  <td>{r.rank}</td>
+                  <td>
+                    <p>{r.rank}</p>
+                  </td>
                   <td>
                     {!r.image ? (
                       <img src={GenericHeadshot} />
@@ -290,10 +302,18 @@ export default function Rankings() {
                       <img src={r.image} />
                     )}
                   </td>
-                  <td>{r.name}</td>
-                  <td>{r.team}</td>
-                  <td>{r.position}</td>
-                  <td>{r.posrank}</td>
+                  <td>
+                    <p>{r.name}</p>
+                  </td>
+                  <td>
+                    <p>{r.team}</p>
+                  </td>
+                  <td>
+                    <p>{r.position}</p>
+                  </td>
+                  <td>
+                    <p>{r.posrank}</p>
+                  </td>
                 </tr>
               ))}
             </tbody>

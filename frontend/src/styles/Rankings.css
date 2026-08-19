@@ -92,3 +92,9 @@
   width: 85%;
   margin: auto auto;
 }
+
+@media (max-width: 1000px) {
+  tr img {
+    display: none;
+  }
+}

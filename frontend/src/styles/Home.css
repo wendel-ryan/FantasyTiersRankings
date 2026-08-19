@@ -9,8 +9,8 @@
 }
 
 .tiers-content-container {
-  width: 100%;
-  margin: 100px 0;
+  width: 90%;
+  margin: 100px 5%;
   height: fit-content;
   display: flex;
   flex-direction: column;

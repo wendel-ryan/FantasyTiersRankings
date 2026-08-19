@@ -30,7 +30,7 @@
 }
 
 .login-form input {
-  width: 50%;
+  width: 60%;
   text-align: center;
   color: black;
 }
@@ -55,4 +55,10 @@
 .login-logo {
   height: 150px;
   width: auto;
+}
+
+@media (max-width: 1000px) {
+  .login-container {
+    width: 80%;
+  }
 }

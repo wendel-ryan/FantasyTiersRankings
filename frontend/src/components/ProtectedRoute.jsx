@@ -4,7 +4,6 @@ import { checkAndRefreshToken } from "../services/api";
 
 export default function ProtectedRoute() {
   const [allowed, setAllowed] = useState(null);
-  console.log("protect");
 
   useEffect(() => {
     const verify = async () => {
@@ -14,7 +13,6 @@ export default function ProtectedRoute() {
           setAllowed(false);
           return;
         }
-        console.log("check");
         const ok = await checkAndRefreshToken();
         console.log("refresh result:", ok);
         setAllowed(ok);

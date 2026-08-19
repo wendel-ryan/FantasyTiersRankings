@@ -11,11 +11,11 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [sentCode, setSentCode] = useState(false);
   const [codeInput, setCodeInput] = useState("");
-  const [storedCode, setStoredCode] = useState("");
 
   const navigate = useNavigate();
+
+  localStorage.removeItem("reset_email");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,8 +85,7 @@ export default function Register() {
       );
 
       setMessage("E-mail confirmation code sent! Check your email.");
-      setSentCode(true);
-      setStoredCode(resetCode);
+      localStorage.setItem("reset_code", resetCode);
     } catch (error) {
       console.error(error);
       setMessage("Failed to send reset code.");
@@ -94,6 +93,7 @@ export default function Register() {
   };
 
   const handleConfirm = async () => {
+    const storedCode = localStorage.getItem("reset_code");
     if (codeInput === storedCode) {
       try {
         const res = await register(email, password);
@@ -106,7 +106,7 @@ export default function Register() {
       } catch (err) {
         setMessage(err.response?.data?.detail || "Registration failed");
       }
-      setSentCode(false);
+      localStorage.removeItem("reset_code");
     } else {
       setMessage("Invalid code. Try again.");
     }
@@ -149,11 +149,12 @@ export default function Register() {
           </p>
 
           <p style={{ textAlign: "center", marginTop: "1rem" }}>
-            Forgot your password? <Link to="">Reset Password</Link>
+            Forgot your password?{" "}
+            <Link to="/email-confirm">Reset Password</Link>
           </p>
         </form>
       </div>
-      {sentCode && (
+      {localStorage.getItem("reset_code") && (
         <div className="container email-confirm-container">
           <div className="email-confirm-form">
             <h2>Enter Confirmation Code</h2>
@@ -166,7 +167,9 @@ export default function Register() {
             />
 
             <button onClick={handleConfirm}>Confirm Code</button>
-
+            <Link className="resend" onClick={sendConfirmCode}>
+              Resend Code
+            </Link>
             {message && <p>{message}</p>}
           </div>
         </div>

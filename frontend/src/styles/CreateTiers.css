@@ -174,3 +174,25 @@
   color: black;
   margin: auto 0;
 }
+
+.create-tiers-warning {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .computer {
+    display: none;
+  }
+
+  .create-tiers-warning {
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    text-align: center;
+    margin: 100px 10%;
+  }
+
+  .create-new-tiers-btn {
+    display: none;
+  }
+}

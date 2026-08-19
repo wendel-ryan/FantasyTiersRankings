@@ -29,6 +29,9 @@ export default function UserTiers() {
   to draft or still need to use the tiers you created, we suggest you wait to create 
   your new tiers.`;
 
+  const mobileWarning = `Tier creation is not available on mobile. You must use a 
+  PC or laptop to edit or create new tiers.`;
+
   const generateTierColors = (numTiers) => {
     const colors = [];
     for (let i = 0; i < numTiers; i++) {
@@ -337,13 +340,18 @@ export default function UserTiers() {
     <section className="user-tiers-page">
       <Navbar />
       <div className="create-new-container">
-        <button onClick={() => setShowForm(true)}>Create New Tiers</button>
+        <button
+          className="create-new-tiers-btn"
+          onClick={() => setShowForm(true)}
+        >
+          Create New Tiers
+        </button>
       </div>
       <div className="container user-tiers-container">
         {tiers.length > 0 && (
           <div className="user-tiers">
+            <h3>{format + " Tiers:"}</h3>
             <div className="user-tiers-info">
-              <h3>{format + " Tiers:"}</h3>
               <p>{"QB: " + tierCounts["QB"] + " tiers"}</p>
               <p>{"RB: " + tierCounts["RB"] + " tiers"}</p>
               <p>{"WR: " + tierCounts["WR"] + " tiers"}</p>
@@ -351,22 +359,30 @@ export default function UserTiers() {
               <p>{"DST: " + tierCounts["DST"] + " tiers"}</p>
               <p>{"K: " + tierCounts["K"] + " tiers"}</p>
             </div>
-            {!loadingDoc ? (
-              <button onClick={() => generateTierSheetDocument(printableTiers)}>
-                Export Document
+            <div className="user-tiers-buttons">
+              {!loadingDoc ? (
+                <button
+                  onClick={() => generateTierSheetDocument(printableTiers)}
+                >
+                  Export Document
+                </button>
+              ) : (
+                <button>Loading...</button>
+              )}
+              <button
+                className="edit-tiers"
+                onClick={() => createTiers(tiers, playersToRemove, format)}
+              >
+                Edit Tiers
               </button>
-            ) : (
-              <button>Loading...</button>
-            )}
-            <button onClick={() => createTiers(tiers, playersToRemove, format)}>
-              Edit Tiers
-            </button>
+            </div>
           </div>
         )}
       </div>
       {showForm && (
         <div className="container create-tiers-form-container">
           <div className="create-tiers-form">
+            <p style={{ color: "red" }}>{mobileWarning}</p>
             <p style={{ color: "red" }}>{warning}</p>
             <h2>Select Format:</h2>
             <select

@@ -63,7 +63,7 @@
 
 .confirm-container {
   width: 40%;
-  height: 30%;
+  height: 35%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -104,4 +104,15 @@
   border-radius: 5px;
   color: black;
   margin-top: 10px;
+}
+
+.resend {
+  margin-top: 5px;
+}
+
+@media (max-width: 1000px) {
+  .password-reset-container,
+  .confirm-container {
+    width: 80%;
+  }
 }

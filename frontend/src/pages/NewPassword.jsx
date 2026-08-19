@@ -9,6 +9,8 @@ export default function NewPassword() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  localStorage.removeItem("reset_code");
+
   const email = localStorage.getItem("reset_email");
 
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ export default function NewPassword() {
       const res = await resetPassword(email, password);
 
       setMessage(res.msg);
+      localStorage.removeItem("reset_email");
       navigate("/login");
     } catch (err) {
       console.error(err);

@@ -10,6 +10,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  localStorage.removeItem("reset_code");
+  localStorage.removeItem("reset_email");
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

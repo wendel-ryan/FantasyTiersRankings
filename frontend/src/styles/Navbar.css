@@ -53,3 +53,18 @@
   list-style-type: none;
   margin: auto 15px;
 }
+
+@media (max-width: 1000px) {
+  .nav-logo {
+    height: 40px;
+    width: auto;
+  }
+
+  .nav-item {
+    width: 50px;
+  }
+
+  .navbar {
+    height: 50px;
+  }
+}

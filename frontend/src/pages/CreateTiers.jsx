@@ -171,7 +171,10 @@ export default function CreateTiers() {
   return (
     <section className="create-tiers-page">
       <Navbar isSaved={false} tiers={tiers} format={format} />
-      <div className="header-content">
+      <h4 className="create-tiers-warning">
+        This Content is not available on mobile.
+      </h4>
+      <div className="header-content computer">
         <div className="position-selector">
           <label htmlFor="position">Select Position:</label>
           <select
@@ -199,7 +202,7 @@ export default function CreateTiers() {
         </button>
       </div>
       {position != "" && (
-        <div className="content-container">
+        <div className="content-container computer">
           <div className="tiers-data-container container">
             <div className="tiers-data">
               <h3>{position + " Tiers"}</h3>

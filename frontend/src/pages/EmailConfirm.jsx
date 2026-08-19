@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 import { useNavigate } from "react-router-dom";
 import "../styles/EmailConfirm.css";
 import Logo from "../assets/LogoWords.png";
+import { Link } from "react-router-dom";
 
 export default function EmailConfirm() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [sentCode, setSentCode] = useState(false);
   const [codeInput, setCodeInput] = useState("");
-  const [storedCode, setStoredCode] = useState("");
 
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ export default function EmailConfirm() {
 
       setMessage("Reset code sent! Check your email.");
       setSentCode(true);
-      setStoredCode(resetCode);
+      localStorage.setItem("reset_code", resetCode);
     } catch (error) {
       console.error(error);
       setMessage("Failed to send reset code.");
@@ -49,8 +49,10 @@ export default function EmailConfirm() {
   };
 
   const handleConfirm = () => {
+    const storedCode = localStorage.getItem("reset_code");
     if (codeInput === storedCode) {
       setMessage("Code verified!");
+      localStorage.removeItem("reset_code");
       navigate("/new-password");
     } else {
       setMessage("Invalid code. Try again.");
@@ -62,7 +64,7 @@ export default function EmailConfirm() {
       <div className="register-logo-container">
         <img className="register-logo" src={Logo}></img>
       </div>
-      {sentCode ? (
+      {localStorage.getItem("reset_email") ? (
         <div className="container confirm-container">
           <div className="confirm-form">
             <h2>Enter Reset Code</h2>
@@ -75,7 +77,9 @@ export default function EmailConfirm() {
             />
 
             <button onClick={handleConfirm}>Confirm Code</button>
-
+            <Link className="resend" onClick={sendResetCode}>
+              Resend Code
+            </Link>
             {message && <p>{message}</p>}
           </div>
         </div>
